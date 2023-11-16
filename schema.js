@@ -1,32 +1,44 @@
-export const typeDef = `#graphql
-    type Games {
+export const typeDefs = `#graphql
+    type Game {
         id: ID!,
         title: String!,
         platform: [String!]!
+        reviews: [Review!]
+      #   author: Author!
      }
 
      type Review {
         id: ID!
         rating: Int!
         content: String!
+        game: Game!
+        author: Author!
      }
 
      type Author {
         id: ID!
         name: String!
         verified: Boolean!
+        reviews: [Review!]
      }
 
      type Query {
         reviews: [Review]
-        games: [Games]
+        review(id:ID): Review
+        games: [Game]
+        game(id:ID): Game
         authors: [Author]
+        author(id:ID): Author
+     },
+     type Mutation {
+      deleteGame(id:ID!): [Game]
+      addGame(game:AddGameInput!): Game!
+     },
+     input AddGameInput {
+      title: String!
+      platform: [String!]!
      }
-
-    #  The following is mandatory a 'special' type. Is a type that every 
-    # graphql must have. Its job is to specify the entry point to the graph and also specify the return type.
-
 `;
 
-// Types built into graphql: Int, Float, String, Boolean, ID.
+// Types built into graphql: Int, Float, String, Boolean, ID. 
 // Required is instruct by adding a '!' exclamation mark. 
